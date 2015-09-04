@@ -1,7 +1,4 @@
 ﻿# Hyper-X 项目相关
-
-标签（空格分隔）： Hyper-x
-
 ---
 **Hyper-X** 是我们最近进行的秘密项目之一。目的是为协会内部的程序员以及开发者免费提供国际
 互联网的接入服务。简而言之——**「无痛的科学上网」**。免去使用 VPN 、红杏、shadowsocks …… 以及
@@ -31,5 +28,6 @@
 最后，请参照 Term of Service 的相关条例，遵守当地的法律。
 祝大家使用愉快。:)
 
-
+IP List 最后更新:2015.9.4
+By Leo
   [1]: http://share.idaxiang.org/notes/NtRldhllFFpxNJBp/20150904/VJd9td11hlVt1p1Jhd1hp9dRh1ZBJZBRJhlVdtpB9BlVddZpR9ZhpVJlllNZBB1B/images/760034d3fa019ac5f517a7a53f4747c6.jpg
