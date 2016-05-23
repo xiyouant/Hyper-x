@@ -31,7 +31,7 @@ service dns-clean
 
 echo "Service dnsmasq stop success/n"
 
-## NAT 搭建软路由 
+## NAT 搭建软路由
 iptables -t filter -A FORWARD -m state --state RELATED,ESTABLISHED -j ACCEPT
 iptables -t nat -A POSTROUTING -j SNAT --to-source $eth0_IP
 
@@ -52,12 +52,11 @@ fi
 
 ## 开启　dnsmasq 服务
 service dnsmasq start
-echo "Service dnsmasq start success/n"
+echo -e "Service dnsmasq start success"
 
 # 开启 ss-tunnel 准备 DNS 转发
-nohup ss-tunnel -c $configfile_path -l $ss-tunnel_port -u -L $ss-tunnel_address & >> udp.log &
-echo "Service ss-tunnel start /n"
-
+nohup ss-tunnel -c $configfile_path -l $ss_tunnel_port -u -L $ss_tunnel_address > /dev/null 2>&1&
+echo -e "Service ss-tunnel start"
 
 ## 建立 shadowsocks 规则链,添加服务器 IP 放行
 iptables -t nat -N SHADOWSOCKS
@@ -67,9 +66,9 @@ iptables -t nat -A SHADOWSOCKS -d $server_IP2 -j RETURN
 iptables -t nat -A SHADOWSOCKS -d $server_IP3 -j RETURN
 iptables -t nat -A SHADOWSOCKS -d $server_IP4 -j RETURN
 iptables -t nat -A SHADOWSOCKS -d $server_IP5 -j RETURN
-iptables -t nat -A SHADOWSOCKS -d $server_IP6 -j RETURN 
-iptables -t nat -A SHADOWSOCKS -d $server_IP7 -j RETURN 
-echo "Create shadowsocks chain success/n"
+iptables -t nat -A SHADOWSOCKS -d $server_IP6 -j RETURN
+iptables -t nat -A SHADOWSOCKS -d $server_IP7 -j RETURN
+echo -e "Create shadowsocks chain success"
 
 
 ## 局域网 IP 放行
@@ -83,14 +82,15 @@ iptables -t nat -A SHADOWSOCKS -d 10.0.0.0/8 -j RETURN
 iptables -t nat -A SHADOWSOCKS -d 192.168.0.0/16 -p tcp -j RETURN
 echo "Input LAN IP success/n"
 
-# Tcp 导向 shadowsocks 链
-iptables -t nat -A SHADOWSOCKS -p tcp -j REDIRECT --to-ports 1080 
+# 将其他 IP 导向 SS
+iptables -t nat -A SHADOWSOCKS -p tcp -j REDIRECT --to-ports 1080
+# 将所有 tcp 数据包 导向 SHADOWSOCKS 规则
 iptables -t nat -A PREROUTING -p tcp -j SHADOWSOCKS
-echo "Shadowsocks chain start/n"
+echo -e "Shadowsocks chain start"
 
-# 开启 Tcp 包转发 
-nohup ss-redir -c $configfile_path -d start  & >> tcp.log &
-echo "Service ss-redir start /n"
+# 开启 tcp 包转发
+nohup ss-redir -c $configfile_path -d start >/dev/null 2>&1&
+echo -e "Service ss-redir start"
 
 ##  中国区 IP 地址段直连
 ##curl http://ftp.apnic.net/apnic/stats/apnic/delegated-apnic-latest | grep 'apnic|CN|ipv4'
@@ -5925,7 +5925,7 @@ iptables -t nat -I SHADOWSOCKS -d 223.255.0.0/17 -j RETURN
 iptables -t nat -I SHADOWSOCKS -d 223.255.236.0/22 -j RETURN
 iptables -t nat -I SHADOWSOCKS -d 223.255.252.0/23 -j RETURN
 
-echo "Input China IP rules success/n"
-echo "All done"
+echo -e "Input China IP rules success"
+echo -e "All done"
 exit 0
 ##其中已增加网易云音乐和国内主流视频站支持
